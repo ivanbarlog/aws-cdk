@@ -20,7 +20,7 @@ const fnUrl = fn.addFunctionUrl({
 
 const oac = new cloudfront.CfnOriginAccessControl(
   stack,
-  'HandlerOriginAccessControl',
+  'OriginAccessControl',
   {
     originAccessControlConfig: {
       name: 'sample',

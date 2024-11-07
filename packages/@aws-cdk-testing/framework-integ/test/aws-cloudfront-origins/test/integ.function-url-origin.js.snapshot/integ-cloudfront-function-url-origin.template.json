@@ -76,6 +76,17 @@
     "Principal": "*"
    }
   },
+  "OriginAccessControl": {
+   "Type": "AWS::CloudFront::OriginAccessControl",
+   "Properties": {
+    "OriginAccessControlConfig": {
+     "Name": "sample",
+     "OriginAccessControlOriginType": "lambda",
+     "SigningBehavior": "always",
+     "SigningProtocol": "sigv4"
+    }
+   }
+  },
   "Distribution830FAC52": {
    "Type": "AWS::CloudFront::Distribution",
    "Properties": {
@@ -113,7 +124,13 @@
          }
         ]
        },
-       "Id": "integcloudfrontfunctionurloriginDistributionOrigin19836FF4B"
+       "Id": "integcloudfrontfunctionurloriginDistributionOrigin19836FF4B",
+       "OriginAccessControlId": {
+        "Fn::GetAtt": [
+         "OriginAccessControl",
+         "Id"
+        ]
+       }
       }
      ]
     }
