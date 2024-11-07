@@ -18,8 +18,25 @@ const fnUrl = fn.addFunctionUrl({
   authType: lambda.FunctionUrlAuthType.NONE,
 });
 
+const oac = new cloudfront.CfnOriginAccessControl(
+  stack,
+  'HandlerOriginAccessControl',
+  {
+    originAccessControlConfig: {
+      name: 'sample',
+      originAccessControlOriginType: 'lambda',
+      signingBehavior: 'always',
+      signingProtocol: 'sigv4',
+    },
+  },
+);
+
 new cloudfront.Distribution(stack, 'Distribution', {
-  defaultBehavior: { origin: new origins.FunctionUrlOrigin(fnUrl) },
+  defaultBehavior: {
+    origin: new origins.FunctionUrlOrigin(fnUrl, {
+      originAccessControlId: oac.attrId,
+    }),
+  },
 });
 
 new IntegTest(app, 'rest-api-origin', {
